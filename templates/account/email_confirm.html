@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+        {% if confirmation %}
+            <div class="mb-6">
+                <svg class="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                {% trans "Confirm Email Address" %}
+            </h1>
+
+            <form method="post" action="{{ action_url }}">
+                {% csrf_token %}
+                <p class="text-gray-600 dark:text-gray-300 mb-6">
+                    {% blocktrans with confirmation.email_address.email as email %}
+                    Please confirm that <span class="font-medium">{{ email }}</span> is your email address.
+                    {% endblocktrans %}
+                </p>
+                <button type="submit"
+                        class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-150">
+                    {% trans 'Confirm' %}
+                </button>
+            </form>
+
+        {% else %}
+            <div class="mb-6">
+                <svg class="w-16 h-16 text-red-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                {% trans "Invalid Confirmation Link" %}
+            </h1>
+            
+            <p class="text-gray-600 dark:text-gray-300 mb-6">
+                {% trans 'This confirmation link has expired or is invalid. Please request a new confirmation email.' %}
+            </p>
+
+            <a href="{% url 'account_email' %}"
+               class="inline-block px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-150">
+                {% trans "Request New Confirmation Email" %}
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 text-transparent bg-clip-text">
+                Sign In
+            </h1>
+            <p class="mt-4 text-gray-600">
+                Welcome back to UniNicknames
+            </p>
+        </div>
+
+        {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+            <div class="p-4 rounded-xl {% if message.tags == 'error' %}bg-red-50 text-red-700 border-2 border-red-200{% else %}bg-blue-50 text-blue-700 border-2 border-blue-200{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% get_providers as socialaccount_providers %}
+        
+        {% if socialaccount_providers %}
+        <div class="mb-6">
+            <a href="{% provider_login_url 'google' %}"
+               class="w-full flex items-center justify-center px-6 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transform transition-all duration-200">
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                    <path d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" fill="currentColor"/>
+                </svg>
+                Continue with Google
+            </a>
+        </div>
+
+        <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">Or continue with email</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <form class="space-y-6" method="POST" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+
+            <div>
+                <label for="id_login" class="block text-sm font-medium text-gray-700">Email Address</label>
+                <div class="mt-1">
+                    <input type="email" name="login" id="id_login" autocomplete="email" required
+                           class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500">
+                </div>
+            </div>
+
+            <div>
+                <label for="id_password" class="block text-sm font-medium text-gray-700">Password</label>
+                <div class="mt-1">
+                    <input type="password" name="password" id="id_password" autocomplete="current-password" required
+                           class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-purple-500 focus:border-purple-500">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input type="checkbox" name="remember" id="id_remember" 
+                           class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                    <label for="id_remember" class="ml-2 block text-sm text-gray-900">Remember me</label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="{% url 'account_reset_password' %}" 
+                       class="font-medium text-purple-600 hover:text-purple-500">
+                        Forgot your password?
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center text-sm">
+            <p class="text-gray-600">
+                Don't have an account?
+                <a href="{% url 'account_signup' %}" 
+                   class="font-medium text-purple-600 hover:text-purple-500">
+                    Sign up
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %} 

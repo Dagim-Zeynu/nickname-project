@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center">
+        <div class="mb-6">
+            <svg class="w-16 h-16 text-purple-600 dark:text-purple-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+        </div>
+        
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Verify Your Email Address
+        </h1>
+        
+        <p class="text-gray-600 dark:text-gray-300 mb-6">
+            We've sent an email to verify your address. Please click the link in the email to complete your registration.
+            If you don't see the email, check your spam folder.
+        </p>
+        
+        <div class="space-y-4">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                Didn't receive the email?
+            </p>
+            <a href="{% url 'account_email' %}" 
+               class="inline-block px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition duration-150">
+                Resend Verification Email
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
